@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link rel="stylesheet" href="main.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js"></script>
+    <script src="https://cdn.rawgit.com/alanszp/Chart.js/master/Chart.min.js"></script>
+    <script src="https://cdn.rawgit.com/jtblin/angular-chart.js/master/dist/angular-chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jtblin/angular-chart.js/master/dist/angular-chart.css"/>
+    <script src="chartDemo.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h3 class="text-muted">Yarn Application Statistics </h3>
+        </div>
+
+        <div class="footer"></div>
+    </div>
+
+    <div class="body" ng-view=""></div>
+
+    <div class="body" ng-app="chartDemo" ng-controller="MainController as mainCtrl" style="max-width:1000px;">
+        <button type="button" ng-click="toggleInteractive()">{{buttonText}} Interactive Mode</button>
+        <canvas id="line" 
+          class="chart chart-line"
+          chart-data="mainCtrl.capacityData" 
+          chart-labels="mainCtrl.capacityLabels" 
+          chart-legend="true" chart-series="mainCtrl.capacitySeries" chart-legend="true"
+          chart-click="mainCtrl.onClick"></canvas> 
+
+    </div>
+
+</body>
+
+</html>
+
+
+
+
+
+
