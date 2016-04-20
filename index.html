@@ -10,7 +10,7 @@
     <script src="https://cdn.rawgit.com/jtblin/angular-chart.js/master/dist/angular-chart.min.js"></script>
     <link rel="stylesheet" href="https://cdn.rawgit.com/jtblin/angular-chart.js/master/dist/angular-chart.css"/>
     <script src="chartDemo.js"></script>
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 
 </head>
 
@@ -25,13 +25,24 @@
 
     <div class="body" ng-view=""></div>
 
-    <div class="body" ng-app="chartDemo" ng-controller="MainController as mainCtrl" style="margin:0 auto; max-width:1000px;">
-        <button type="button" ng-click="toggleInteractive()">{{buttonText}} Interactive Mode</button>
+
+    <div class="body" ng-app="chartDemo" ng-controller="MainController as mainCtrl" style="margin:0 auto; max-width:500px;">
+        <select ng-model="selectedQueue" ng-options="x for x in queues"></select>
+
+        <button type="button" ng-click="toggleInteractive()">{{buttonText}}</button>
         <canvas id="line" 
           class="chart chart-line"
-          chart-data="mainCtrl.capacityData" 
-          chart-labels="mainCtrl.capacityLabels" 
-          chart-legend="true" chart-series="mainCtrl.capacitySeries" chart-legend="true"
+          chart-data="mainCtrl.absoluteUsedCapacity" 
+          chart-labels="mainCtrl.absoluteUsedCapacityLabel" 
+          chart-legend="true" chart-series="mainCtrl.absoluteUsedCapacitySeries" chart-legend="true"
+          chart-options="mainCtrl.options"
+          chart-click="mainCtrl.onClick"></canvas> 
+
+        <canvas id="line" 
+          class="chart chart-line"
+          chart-data="mainCtrl.numPendingApplications" 
+          chart-labels="mainCtrl.numPendingApplicationsLabel" 
+          chart-legend="true" chart-series="mainCtrl.numPendingApplicationsSeries" chart-legend="true"
           chart-options="mainCtrl.options"
           chart-click="mainCtrl.onClick"></canvas> 
 
