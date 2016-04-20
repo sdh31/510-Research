@@ -28,7 +28,7 @@
             <div class="span3" style='position:absolute;'>
                 Select a Queue <select ng-model="selectedQueue" ng-options="x for x in queues" ng-change="updateStaticValues()"></select>
 
-                    <button type="button" ng-click="toggleInteractive()">{{buttonText}}</button>
+                    <button type="button" class="btn btn-default" ng-click="toggleInteractive()">{{buttonText}}</button>
                 <!-- sidebar of page -->
                 <div class="tabbable tabs-left">
                     <ul class="">
@@ -59,7 +59,8 @@
                       chart-labels="mainCtrl.absoluteUsedCapacityLabel" 
                       chart-legend="true" chart-series="mainCtrl.absoluteUsedCapacitySeries" chart-legend="true"
                       chart-options="mainCtrl.absoluteUsedCapacityOptions"
-                      chart-click="mainCtrl.onClick"></canvas> 
+                      chart-click="mainCtrl.onClick"
+                      chart-colours="['#803690']"></canvas> 
 
                     <canvas id="line" 
                       class="chart chart-line"
@@ -67,7 +68,8 @@
                       chart-labels="mainCtrl.numPendingApplicationsLabel" 
                       chart-legend="true" chart-series="mainCtrl.numPendingApplicationsSeries" chart-legend="true"
                       chart-options="mainCtrl.numPendingApplicationsOptions"
-                      chart-click="mainCtrl.onClick"></canvas> 
+                      chart-click="mainCtrl.onClick"
+                      chart-colours="['#FF8A80']"></canvas> 
 
                     <canvas id="line" 
                       class="chart chart-line"
@@ -75,7 +77,8 @@
                       chart-labels="mainCtrl.resourcesUsedLabel" 
                       chart-legend="true" chart-series="mainCtrl.resourcesUsedSeries" chart-legend="true"
                       chart-options="mainCtrl.resourcesUsedOptions"
-                      chart-click="mainCtrl.onClick"></canvas> 
+                      chart-click="mainCtrl.onClick"
+                      chart-colours="['#FF0000']"></canvas> 
 
                 </div>
             </div>

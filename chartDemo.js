@@ -3,7 +3,7 @@ angular.module('chartDemo', ['chart.js'])
     // Configure all charts
     ChartJsProvider.setOptions({
       animation: false,
-      colours: ['#803690', '#FF8A80'],
+      // colours: ['#803690', '#FF8A80'],
       //responsive: false
     });
     // Configure all line charts
