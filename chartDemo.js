@@ -29,23 +29,37 @@ function MainController($scope, $timeout, $http) {
   $scope.interactive = false;
   var vm = this;
 
-   var options = {
-    ticks: (display) => false
-};
+   var absoluteUsedCapacityOptions = {
+    arc: (backgroundColor) => '#803690'
+    };
+
+    var numPendingApplicationsOptions = {
+    arc: (backgroundColor) => '#FF8A80'
+  };
+      var resourcesUsedOptions = {
+    arc: (backgroundColor) => '#FF8A80'
+  };
+
 
 
   var absoluteUsedCapacity = [[1]],
       numPendingApplications = [[1]],
+      resourcesUsed = [[1]],
       lineChart; //created in onCreate
   
   angular.extend(vm, {
-  	absoluteUsedCapacitySeries: ['Absolute Used Capacity'],
+  	absoluteUsedCapacitySeries: ['Absolute Used Capacity (%)'],
     numPendingApplicationsSeries: ['Number of Pending Applications'],
+    resourcesUsedSeries: ['Memory Used (MB)'],
   	absoluteUsedCapacity: absoluteUsedCapacity,
     absoluteUsedCapacityLabel: Object.keys(absoluteUsedCapacity[0]),
     numPendingApplications: numPendingApplications,
     numPendingApplicationsLabel: Object.keys(numPendingApplications[0]),
-    options: options,
+    resourcesUsed: resourcesUsed,
+    resourcesUsedLabel: Object.keys(resourcesUsed[0]),
+    absoluteUsedCapacityOptions: absoluteUsedCapacityOptions,
+    numPendingApplicationsOptions: numPendingApplicationsOptions,
+    resourcesUsedOptions: resourcesUsedOptions,
   	onClick: function (points, evt) {
     	
   	},
@@ -74,11 +88,35 @@ function MainController($scope, $timeout, $http) {
     
   });
 
+
+  $scope.updateStaticValues = function() {
+    $scope.queryDatabase('capacity').then(function(response) {
+      $scope.capacity = response.data.values[0];
+    });
+    $scope.queryDatabase('maxCapacity').then(function(response) {
+      $scope.maxCapacity = response.data.values[0];
+    });
+    $scope.queryDatabase('maxApplications').then(function(response) {
+      $scope.maxApplications = response.data.values[0];
+    });
+    $scope.queryDatabase('userLimitFactor').then(function(response) {
+      $scope.userLimitFactor = response.data.values[0];
+    });
+    $scope.queryDatabase('parentQueueName').then(function(response) {
+      $scope.parentQueueName = response.data.values[0];
+    });
+    $scope.queryDatabase('absoluteMaxCapacity').then(function(response) {
+      $scope.absoluteMaxCapacity = response.data.values[0];
+    });
+
+  };
+
+  $scope.updateStaticValues();
+
   
   function startTimer() {
     if (	vm.enable	) {
     	$timeout(function() {
-         var count = 0;
          $scope.queryDatabase('absoluteUsedCapacity').then(function(response) {
             vm.absoluteUsedCapacity[0] = response.data.values;
             var len = response.data.values.length;
@@ -99,8 +137,22 @@ function MainController($scope, $timeout, $http) {
             }
 
             vm.numPendingApplicationsLabel = newLabs;
-            count++;
           });
+
+        $scope.queryDatabase('resourcesUsed').then(function(response) {
+            console.log(response);
+            var actualData = [];
+            var newLabs = [];
+            var len = response.data.values.length;
+            for (var i = 0; i < len; i++) {
+              var ans = JSON.parse(response.data.values[i])
+              actualData.push(ans["memory"])
+              newLabs.push('');
+            }
+            vm.resourcesUsed[0] = actualData
+            vm.resourcesUsedLabel = newLabs;
+          });
+
 
           continueTimer();
 

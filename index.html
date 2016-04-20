@@ -23,30 +23,70 @@
         <div class="footer"></div>
     </div>
 
-    <div class="body" ng-view=""></div>
+        <div class="row-fluid" ng-app="chartDemo" ng-controller="MainController as mainCtrl" >
+        <div class="span3">
+            <div class="span3" style='position:absolute;'>
+                Select a Queue <select ng-model="selectedQueue" ng-options="x for x in queues" ng-change="updateStaticValues()"></select>
 
+                    <button type="button" ng-click="toggleInteractive()">{{buttonText}}</button>
+                <!-- sidebar of page -->
+                <div class="tabbable tabs-left">
+                    <ul class="">
+                        <li ng-class=""
+                            ng-click="">
+                            Capacity: {{capacity}} %</li>
+                        <li ng-class=""
+                            ng-click="">Max Capacity: {{maxCapacity}} %</li>
+                        <li ng-class=""
+                            ng-click="">Absolute Max Capacity: {{absoluteMaxCapacity}} %</li>
+                        <li ng-class=""
+                            ng-click="">Max Applications: {{maxApplications}}</li>
+                        <li ng-class=""
+                            ng-click="">User Limit Factor: {{userLimitFactor}}</li>
+                        <li ng-class=""
+                            ng-click="">Parent Queue Name: {{parentQueueName}}</li>
 
-    <div class="body" ng-app="chartDemo" ng-controller="MainController as mainCtrl" style="margin:0 auto; max-width:500px;">
-        <select ng-model="selectedQueue" ng-options="x for x in queues"></select>
+                    </ul>
+                </div>
 
-        <button type="button" ng-click="toggleInteractive()">{{buttonText}}</button>
-        <canvas id="line" 
-          class="chart chart-line"
-          chart-data="mainCtrl.absoluteUsedCapacity" 
-          chart-labels="mainCtrl.absoluteUsedCapacityLabel" 
-          chart-legend="true" chart-series="mainCtrl.absoluteUsedCapacitySeries" chart-legend="true"
-          chart-options="mainCtrl.options"
-          chart-click="mainCtrl.onClick"></canvas> 
+            </div>
 
-        <canvas id="line" 
-          class="chart chart-line"
-          chart-data="mainCtrl.numPendingApplications" 
-          chart-labels="mainCtrl.numPendingApplicationsLabel" 
-          chart-legend="true" chart-series="mainCtrl.numPendingApplicationsSeries" chart-legend="true"
-          chart-options="mainCtrl.options"
-          chart-click="mainCtrl.onClick"></canvas> 
+            <div class='span9'>
+                <div class="body"style="margin:0 auto; max-width:500px;">
+                    <canvas id="line" 
+                      class="chart chart-line"
+                      chart-data="mainCtrl.absoluteUsedCapacity" 
+                      chart-labels="mainCtrl.absoluteUsedCapacityLabel" 
+                      chart-legend="true" chart-series="mainCtrl.absoluteUsedCapacitySeries" chart-legend="true"
+                      chart-options="mainCtrl.absoluteUsedCapacityOptions"
+                      chart-click="mainCtrl.onClick"></canvas> 
+
+                    <canvas id="line" 
+                      class="chart chart-line"
+                      chart-data="mainCtrl.numPendingApplications" 
+                      chart-labels="mainCtrl.numPendingApplicationsLabel" 
+                      chart-legend="true" chart-series="mainCtrl.numPendingApplicationsSeries" chart-legend="true"
+                      chart-options="mainCtrl.numPendingApplicationsOptions"
+                      chart-click="mainCtrl.onClick"></canvas> 
+
+                    <canvas id="line" 
+                      class="chart chart-line"
+                      chart-data="mainCtrl.resourcesUsed" 
+                      chart-labels="mainCtrl.resourcesUsedLabel" 
+                      chart-legend="true" chart-series="mainCtrl.resourcesUsedSeries" chart-legend="true"
+                      chart-options="mainCtrl.resourcesUsedOptions"
+                      chart-click="mainCtrl.onClick"></canvas> 
+
+                </div>
+            </div>
+        </div>
 
     </div>
+
+
+
+
+
 
 </body>
 
