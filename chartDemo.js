@@ -42,13 +42,13 @@ function MainController($scope, $timeout, $http) {
 
 
 
-  var absoluteUsedCapacity = [[1]],
+  var absoluteUsedCapacity = [[1], [1]],
       numPendingApplications = [[1]],
       resourcesUsed = [[1]],
       lineChart; //created in onCreate
   
   angular.extend(vm, {
-  	absoluteUsedCapacitySeries: ['Absolute Used Capacity (%)'],
+  	absoluteUsedCapacitySeries: ['Absolute Used Capacity (%)', 'Used Capacity (%)'],
     numPendingApplicationsSeries: ['Number of Pending Applications'],
     resourcesUsedSeries: ['Memory Used (MB)'],
   	absoluteUsedCapacity: absoluteUsedCapacity,
@@ -119,6 +119,17 @@ function MainController($scope, $timeout, $http) {
     	$timeout(function() {
          $scope.queryDatabase('absoluteUsedCapacity').then(function(response) {
             vm.absoluteUsedCapacity[0] = response.data.values;
+            var len = response.data.values.length;
+            var newLabs = [];
+            for (var i = 0; i < len; i++) {
+              newLabs.push('');
+            }
+
+            vm.absoluteUsedCapacityLabel = newLabs;
+         });
+
+        $scope.queryDatabase('usedCapacity').then(function(response) {
+            vm.absoluteUsedCapacity[1] = response.data.values;
             var len = response.data.values.length;
             var newLabs = [];
             for (var i = 0; i < len; i++) {
