@@ -164,29 +164,36 @@ function MainController($scope, $timeout, $http) {
             vm.numPendingApplicationsLabel = newLabs;
           });
 
-        $scope.queryDatabase('resourcesUsed').then(function(response) {
-            var actualData = [];
-            var newLabs = [];
-            var len = response.data.values.length;
-            for (var i = 0; i < len; i++) {
-              var ans = JSON.parse(response.data.values[i])
-              actualData.push(ans["memory"])
-              newLabs.push('');
-            }
-            vm.resourcesUsed[0] = actualData
-            vm.resourcesUsedLabel = newLabs;
-          });
-
-        $scope.queryDatabaseForAllocatedMB().then(function(response) {
-            vm.allocatedMB[0] = response.data.values;
-            var len = response.data.values.length;
+        $scope.queryDatabase('resourcesUsed').then(function(response1) {
+          $scope.queryDatabaseForAllocatedMB().then(function(response2) {
+            // update 2
+            vm.allocatedMB[0] = response2.data.values;
+            var len = response2.data.values.length;
             var newLabs = [];
             for (var i = 0; i < len; i++) {
               newLabs.push('');
             }
 
             vm.allocatedMBLabel = newLabs;
+
+            // update1
+            var actualData = [];
+            newLabs = [];
+            var len1 = response1.data.values.length;
+            for (var i = 0; i < len1; i++) {
+              var ans = JSON.parse(response1.data.values[i])
+              actualData.push(ans["memory"])
+              newLabs.push('');
+            }
+            vm.resourcesUsed[0] = actualData
+            vm.resourcesUsedLabel = newLabs;
+
         });
+
+
+      });
+
+
 
 
           continueTimer();
