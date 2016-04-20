@@ -26,12 +26,28 @@ app.get('/data', function (req, res) {
   basic_db_utility.performMultipleRowDBOperation(query, callback);
 });
 
+// req.query has tag
+app.get('/cluster_metrics', function (req, res) {
+
+  var callback = function(result) {
+    if (result.error) {
+      res.status(400).json(result);
+    } else {
+      res.status(200).json(result.results);
+    }
+  };
+
+  var query = "SELECT * FROM cluster_metrics where tag = '" + req.query.tag + "'";
+
+  basic_db_utility.performSingleRowDBOperation(query, callback);
+});
+
 app.get('/', function (req, res) {
-  res.render('/Users/stephenhughes/Dropbox/Duke/SeniorDuke/510-Research/index.html');
+  res.render('/Users/rahulswaminathan/BigData/510-Research/index.html');
 });
 
 app.get('/chartDemo.js', function (req, res) {
-  res.sendFile('/Users/stephenhughes/Dropbox/Duke/SeniorDuke/510-Research/chartDemo.js');
+  res.sendFile('/Users/rahulswaminathan/BigData/510-Research/chartDemo.js');
 });
 
 app.listen(4000, function () {
