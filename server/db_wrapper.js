@@ -4,7 +4,8 @@ exports.pool  = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'db',
-  database: 'test'
+  database: 'test',
+  port: 3307
 });
 
 exports.connection = {

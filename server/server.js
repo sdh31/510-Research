@@ -27,11 +27,11 @@ app.get('/data', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-  res.render('/Users/rahulswaminathan/BigData/510-Research/index.html');
+  res.render('/Users/stephenhughes/Dropbox/Duke/SeniorDuke/510-Research/index.html');
 });
 
 app.get('/chartDemo.js', function (req, res) {
-  res.sendFile('/Users/rahulswaminathan/BigData/510-Research/chartDemo.js');
+  res.sendFile('/Users/stephenhughes/Dropbox/Duke/SeniorDuke/510-Research/chartDemo.js');
 });
 
 app.listen(4000, function () {

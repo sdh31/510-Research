@@ -14,20 +14,36 @@ angular.module('chartDemo', ['chart.js'])
   }])
 	.controller('MainController', MainController);
 
-function MainController($scope, $timeout) {
+function MainController($scope, $timeout, $http) {
+
+
+  $scope.queryDatabase = function() {
+    var query = '/data?field=absoluteUsedCapacity&table=b1_&start_time=0';
+    return $http.get(query);
+  };
+
+
   $scope.buttonText = 'Start ';
   $scope.interactive = false;
   var vm = this;
+
+   var options = {
+    ticks: (display) => false
+};
+
+
+  
+
   var defaultData = [
-      [65, 59, 80, 81, 56, 55, 40],
-      [70, 44, 33, 22, 11, 88, 10]
+      [1]
   	],
     lineChart; //created in onCreate
   
   angular.extend(vm, {
-  	capacitySeries: ['Total Capacity', 'Used Capacity'], 
+  	capacitySeries: ['Absolute Used Capacity'], 
   	capacityData: defaultData,
     capacityLabels: Object.keys(defaultData[0]),
+    options: options,
   	onClick: function (points, evt) {
     	
   	},
@@ -55,16 +71,24 @@ function MainController($scope, $timeout) {
   $scope.$on('toggle', function(e, data) {
     
   });
-  
+
   
   function startTimer() {
     if (	vm.enable	) {
     	$timeout(function() {
-          vm.capacityData[0].push(Math.random()*50);
-          vm.capacityData[1].push(Math.random()*50);
-          continueTimer();
-          vm.capacityLabels = Object.keys(vm.capacityData[0])
-      	}, 500);
+         $scope.queryDatabase().then(function(response) {
+            vm.capacityData[0] = response.data.values;
+            var len = response.data.values.length;
+            var newLabs = [];
+            for (var i = 0; i < len; i++) {
+              newLabs.push('');
+            }
+
+            vm.capacityLabels = newLabs
+            continueTimer();
+         });
+
+      	}, 1000);
     }
   }
   
@@ -89,4 +113,4 @@ function MainController($scope, $timeout) {
 	});
 }
 
-MainController.$inject = ['$scope', '$timeout'];
+MainController.$inject = ['$scope', '$timeout', '$http'];
