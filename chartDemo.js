@@ -25,6 +25,11 @@ function MainController($scope, $timeout, $http) {
     return $http.get(query);
   };
 
+  $scope.queryDatabaseForAllocatedMB = function() {
+    var query = '/data?field=allocatedMB&table=cluster_metrics_new&start_time=0';
+    return $http.get(query);
+  };
+
   $scope.buttonText = 'Collect Data';
   $scope.interactive = false;
   var vm = this;
@@ -40,26 +45,35 @@ function MainController($scope, $timeout, $http) {
     arc: (backgroundColor) => '#FF8A80'
   };
 
+        var allocatedMBOptions = {
+    arc: (backgroundColor) => '#FF8A80'
+  };
+
 
 
   var absoluteUsedCapacity = [[1], [1]],
       numPendingApplications = [[1]],
       resourcesUsed = [[1]],
+      allocatedMB = [[1]],
       lineChart; //created in onCreate
   
   angular.extend(vm, {
   	absoluteUsedCapacitySeries: ['Absolute Used Capacity (%)', 'Used Capacity (%)'],
     numPendingApplicationsSeries: ['Number of Pending Applications'],
     resourcesUsedSeries: ['Memory Used (MB)'],
+    allocatedMBSeries: ['Allocated MB'],
   	absoluteUsedCapacity: absoluteUsedCapacity,
     absoluteUsedCapacityLabel: Object.keys(absoluteUsedCapacity[0]),
     numPendingApplications: numPendingApplications,
     numPendingApplicationsLabel: Object.keys(numPendingApplications[0]),
     resourcesUsed: resourcesUsed,
     resourcesUsedLabel: Object.keys(resourcesUsed[0]),
+    allocatedMB: allocatedMB,
+    allocatedMBLabel: Object.keys(allocatedMB[0]),
     absoluteUsedCapacityOptions: absoluteUsedCapacityOptions,
     numPendingApplicationsOptions: numPendingApplicationsOptions,
     resourcesUsedOptions: resourcesUsedOptions,
+    allocatedMBOptions: allocatedMBOptions,
   	onClick: function (points, evt) {
     	
   	},
@@ -151,7 +165,6 @@ function MainController($scope, $timeout, $http) {
           });
 
         $scope.queryDatabase('resourcesUsed').then(function(response) {
-            console.log(response);
             var actualData = [];
             var newLabs = [];
             var len = response.data.values.length;
@@ -163,6 +176,17 @@ function MainController($scope, $timeout, $http) {
             vm.resourcesUsed[0] = actualData
             vm.resourcesUsedLabel = newLabs;
           });
+
+        $scope.queryDatabaseForAllocatedMB().then(function(response) {
+            vm.allocatedMB[0] = response.data.values;
+            var len = response.data.values.length;
+            var newLabs = [];
+            for (var i = 0; i < len; i++) {
+              newLabs.push('');
+            }
+
+            vm.allocatedMBLabel = newLabs;
+        });
 
 
           continueTimer();
